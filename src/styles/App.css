@@ -26,7 +26,10 @@ body {
 .nav-dropdown {
     position: relative;
     z-index: 2;
-    width: max-content;
+    max-width: 150px;
+}
+.nav-dropdown-toggle {
+    width: 100%;
 }
 .dropdown-options {
     list-style: none;
