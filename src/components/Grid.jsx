@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export default function Grid() {
+    const [numCols, setNumCols] = useState(0);
+    const [numRows, setnumRows] = useState(0);
+    const elementRef = useRef(null);
     const [grid, setGrid] = useState([]);
     const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -13,6 +16,8 @@ export default function Grid() {
                 gridRow.push({
                     row,
                     col,
+                    startNode: col === 0 && row === 12,
+                    endNode: col === 29 && row === 29,
                 });
             }
             initialGrid.push(gridRow);
@@ -26,32 +31,35 @@ export default function Grid() {
     };
     const handleMouseEnter = (evt, node) => {
         if (isMouseDown) {
-            console.log("create wall", node);
             console.log(evt.target.classList.toggle("wall"));
         }
     };
 
     const handleMouseUp = () => {
-        console.log("mouse is up");
         setIsMouseDown(false);
     };
 
     const handleClick = (e, node) => {
-        e.target.classList.toggle("wall");
+        if (!node.startNode && !node.endNode) e.target.classList.toggle("wall");
     };
 
     useEffect(() => {
-        const initialGrid = getInitialGrid();
+        setNumCols(elementRef.current.clientHeight / 20);
+        setnumRows(elementRef.current.clientWidth / 20);
+        console.log("rows:", numRows, "col: ", numCols);
+        const initialGrid = getInitialGrid(numRows, numCols);
         setGrid(initialGrid);
-    }, []);
+    }, [numCols, numRows]);
 
     return (
-        <div className="Grid">
+        <div className="Grid" ref={elementRef}>
             {grid.map((row) => {
                 return row.map((node, i) => (
                     <div
                         key={i}
-                        className="node"
+                        className={`node ${node.row}-${node.col} ${
+                            node.startNode ? "start-node" : ""
+                        } ${node.endNode ? "end-node" : ""}`}
                         onMouseDown={() => handleMouseDown(node)}
                         onMouseEnter={(e) => handleMouseEnter(e, node)}
                         onMouseUp={handleMouseUp}

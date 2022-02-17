@@ -71,10 +71,10 @@ main {
     margin: 2rem 0;
 
     /* ???? */
-    min-width: 720px;
-    min-height: 500px;
-    max-width: 720px;
-    max-height: 500px;
+    width: 400px;
+    height: 400px;
+    /* max-width: 720px;
+    max-height: 500px; */
 }
 .node {
     width: 20px;
@@ -84,4 +84,10 @@ main {
 }
 .wall {
     background-color: red;
+}
+.start-node {
+    background-color: aqua;
+}
+.end-node {
+    background-color: pink;
 }
