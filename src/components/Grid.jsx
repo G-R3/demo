@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import Dropdown from "./Dropdown";
 
-export default function Grid() {
-    const [numCols, setNumCols] = useState(0);
-    const [numRows, setnumRows] = useState(0);
-    const elementRef = useRef(null);
-    const [grid, setGrid] = useState([]);
+const startNodeRows = 19;
+const startNodeCols = 9;
+const endNodeRows = 20;
+const endNodeCols = 9;
+
+export default function Grid({ visualize }) {
     const [isMouseDown, setIsMouseDown] = useState(false);
+    const [algorithm, setAlgorithm] = useState("");
+    const [grid, setGrid] = useState([]);
 
-    const getInitialGrid = (numRows = 30, numCols = 30) => {
+    const getInitialGrid = (numRows = 50, numCols = 60) => {
         let initialGrid = [];
 
         for (let row = 0; row < numRows; row++) {
@@ -16,8 +20,8 @@ export default function Grid() {
                 gridRow.push({
                     row,
                     col,
-                    startNode: col === 0 && row === 12,
-                    endNode: col === 29 && row === 29,
+                    startNode: row === startNodeRows && col === startNodeCols,
+                    endNode: row === endNodeRows && col === endNodeCols,
                 });
             }
             initialGrid.push(gridRow);
@@ -26,12 +30,18 @@ export default function Grid() {
         return initialGrid;
     };
 
+    useEffect(() => {
+        // this is hardcoded based on the values of the CSS height & weight properties of the Grid class.
+        const initialGrid = getInitialGrid(720 / 20, 600 / 20);
+        setGrid(initialGrid);
+    }, []);
+
     const handleMouseDown = (node) => {
         setIsMouseDown(true);
     };
     const handleMouseEnter = (evt, node) => {
         if (isMouseDown) {
-            console.log(evt.target.classList.toggle("wall"));
+            evt.target.classList.toggle("wall");
         }
     };
 
@@ -43,30 +53,25 @@ export default function Grid() {
         if (!node.startNode && !node.endNode) e.target.classList.toggle("wall");
     };
 
-    useEffect(() => {
-        setNumCols(elementRef.current.clientHeight / 20);
-        setnumRows(elementRef.current.clientWidth / 20);
-        console.log("rows:", numRows, "col: ", numCols);
-        const initialGrid = getInitialGrid(numRows, numCols);
-        setGrid(initialGrid);
-    }, [numCols, numRows]);
-
     return (
-        <div className="Grid" ref={elementRef}>
-            {grid.map((row) => {
-                return row.map((node, i) => (
-                    <div
-                        key={i}
-                        className={`node ${node.row}-${node.col} ${
-                            node.startNode ? "start-node" : ""
-                        } ${node.endNode ? "end-node" : ""}`}
-                        onMouseDown={() => handleMouseDown(node)}
-                        onMouseEnter={(e) => handleMouseEnter(e, node)}
-                        onMouseUp={handleMouseUp}
-                        onClick={(e) => handleClick(e, node)}
-                    ></div>
-                ));
-            })}
-        </div>
+        <>
+            <Dropdown setAlgorithm={setAlgorithm} />
+            <div className="Grid">
+                {grid.map((row) => {
+                    return row.map((node, i) => (
+                        <div
+                            key={i}
+                            className={`node ${node.row}-${node.col} ${
+                                node.startNode ? "start-node" : ""
+                            } ${node.endNode ? "end-node" : ""}`}
+                            onMouseDown={() => handleMouseDown(node)}
+                            onMouseEnter={(e) => handleMouseEnter(e, node)}
+                            onMouseUp={handleMouseUp}
+                            onClick={(e) => handleClick(e, node)}
+                        ></div>
+                    ));
+                })}
+            </div>
+        </>
     );
 }

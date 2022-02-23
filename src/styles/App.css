@@ -16,7 +16,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 0;
     max-width: 1500px;
     margin: 0 auto;
 }
@@ -27,6 +27,7 @@ body {
     position: relative;
     z-index: 2;
     max-width: 150px;
+    margin-bottom: 2rem;
 }
 .nav-dropdown-toggle {
     width: 100%;
@@ -62,17 +63,13 @@ main {
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    max-width: 1700px;
-    margin: 0 auto;
 }
 .Grid {
     display: flex;
     flex-wrap: wrap;
-    margin: 2rem 0;
-
     /* ???? */
-    width: 400px;
-    height: 400px;
+    width: 720px;
+    height: 600px;
     /* max-width: 720px;
     max-height: 500px; */
 }
