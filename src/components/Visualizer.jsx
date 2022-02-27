@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "./Navbar";
 import Grid from "./Grid";
 
 export default function Visualizer() {
-    const [visualize, setVisualize] = useState(false);
-
     return (
         <div>
-            <Navbar visualize={visualize} setVisualize={setVisualize} />
+            <Navbar />
             <main>
                 <div className="Grid-container">
-                    <Grid visualize={visualize} />
+                    <Grid gridName="first" />
                 </div>
                 <div className="Grid-container">
-                    <Grid visualize={visualize} />
+                    <Grid gridName="second" />
                 </div>
             </main>
         </div>
